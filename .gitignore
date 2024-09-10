@@ -1,0 +1,2 @@
+*.safetensors
+model.safetensors.index.json
