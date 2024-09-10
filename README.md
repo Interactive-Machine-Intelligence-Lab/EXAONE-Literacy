@@ -1,4 +1,7 @@
-# EXAONE 3.0
+# 울산형 인공지능 리터러시 내용 체계 및 진단 도구
+
+본 연구에서는 LG AI EXAONE을 기반으로 인공지능 리터러시 진단도구를 개발하고 있습니다.
+
 <br>
 <p align="center">
 <img src="assets/EXAONE_Symbol+BI_3d.png", width="400", style="margin: 40 auto;">
@@ -8,82 +11,19 @@
 
 <br>
 
-## Introduction
+## 요구사항
 
-We introduce EXAONE-3.0-7.8B-Instruct, a pre-trained and instruction-tuned bilingual (English and Korean) generative model with 7.8 billion parameters. 
-The model was pre-trained with 8T curated tokens and post-trained with supervised fine-tuning and direct preference optimization. 
-It demonstrates highly competitive benchmark performance against other state-of-the-art open models of similar size. 
+- NVIDIA CUDA driver 지원이 가능한 GPU
+- Anaconda 환경
+- `transformers>=4.41.0`  (EXAONE 3.0 Model). 
+- streamit 환경 (웹 환경을 위함)
 
-<br>
-
-## News
-
-- 2024.08.08: :wave: :wave: We have revised our [license](./LICENSE) for revitalizing the research ecosystem. :wave: :wave:
-- 2024.08.07: We released the EXAONE 3.0 7.8B instruction-tuned model. Check out the 📑 [Technical Report](https://arxiv.org/abs/2408.03541)!
-
-<br>
-
-## Performance
-
-Some experimental results are shown below. The full evaluation results can be found in the [Technical Report](https://arxiv.org/abs/2408.03541).
-
-| Language | Benchmark | EXAONE 3.0 <br>7.8B Inst. | Llama 3.1 <br>8B Inst. | Gemma 2 <br>9B Inst. | QWEN 2 <br>7B Inst. | Phi 3 <br>7B Inst. | Mistral 7B <br>Inst. |
-| :-----: | :----- | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| English | MT-Bench          | **9.01** | 7.95 | 8.52 | 8.41 | 8.52 | 7.72 |
-|         | Arena-Hard-v0.1   | **46.8** | 28.0 | 42.1 | 21.7 | 29.1 | 16.2 |
-|         | WildBench         | **48.2** | 34.5 | 41.5 | 34.9 | 32.8 | 29.0 |
-|         | AlpacaEval 2.0 LC | 45.0 | 31.5 | **47.5** | 24.5 | 37.1 | 31.0 |
-| Korean  | KoMT-Bench[^1]    | **8.92** | 6.06 | 7.92 | 7.69 | 4.87 | 5.20 |
-|         | LogicKor          | **8.62** | 5.40 | 8.07 | 6.12 | 3.76 | 3.42 |
-
-<br>
-
-## Requirements
-
-- `transformers>=4.41.0` for the EXAONE 3.0 Model. The Latest version is recommended to use.
-
-<br>
 
 ## Quickstart
 
-```python
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-model = AutoModelForCausalLM.from_pretrained(
-    "LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct",
-    torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
-    device_map="auto"
-)
-tokenizer = AutoTokenizer.from_pretrained("LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct")
-
-# Choose your prompt
-prompt = "Explain who you are"  # English example
-prompt = "너의 소원을 말해봐"   # Korean example
-
-messages = [
-    {"role": "system", "content": "You are EXAONE model from LG AI Research, a helpful assistant."},
-    {"role": "user", "content": prompt}
-]
-input_ids = tokenizer.apply_chat_template(
-    messages,
-    tokenize=True,
-    add_generation_prompt=True,
-    return_tensors="pt"
-)
-
-output = model.generate(
-    input_ids.to("cuda"),
-    eos_token_id=tokenizer.eos_token_id,
-    max_new_tokens=128
-)
-print(tokenizer.decode(output[0]))
+```bash
+ streamlit run app.py --server.fileWatcherType none
 ```
-
-> [!Note]
-> The EXAONE 3.0 instruction-tuned language model was trained to utilize the system prompt, 
-> so we highly recommend using the system prompts provided in the code snippet above.
 
 <br>
 
