@@ -16,7 +16,7 @@
 - NVIDIA CUDA driver 지원이 가능한 GPU
 - Anaconda 환경
 - `transformers>=4.41.0`  (EXAONE 3.0 Model). 
-- streamit 환경 (웹 환경을 위함)
+- [streamlit](https://streamlit.io/) 환경 (웹 환경을 위함)
 
 
 ## Quickstart
