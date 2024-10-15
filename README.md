@@ -18,6 +18,10 @@
 - `transformers>=4.41.0`  (EXAONE 3.0 Model). 
 - [streamlit](https://streamlit.io/) 환경 (웹 환경을 위함)
 
+### secret
+
+`secret/key.txt` 에 huggingface 토큰을 넣어주세요. 토큰은 레파지토리의 읽기 권한이 있어야만 합니다.
+
 
 ## Quickstart
 
