@@ -26,6 +26,10 @@ ENV PATH=/opt/conda/envs/llm/bin:$PATH
 COPY app.py /app
 COPY literacy /app/literacy
 
+COPY secret /app/secret
+# environment variable from secret
+RUN huggingface-cli login --add-to-git-credential --token $(cat /app/secret/key.txt) 
+
 EXPOSE 8501 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
