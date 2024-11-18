@@ -1,2 +1,5 @@
 # ignore model
 models/
+
+# ignore python cache
+__pycache__/
