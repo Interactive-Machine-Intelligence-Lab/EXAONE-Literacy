@@ -7,9 +7,7 @@ def get_authenticators():
     # FIXIT: database에 ID/PW 저장
     with open("./secret/sample.yaml") as file: 
         config = yaml.load(file, Loader=yaml.loader.SafeLoader)
-    
-    print(__name__, config)
-    
+
     authenticator = stauth.Authenticate(
         credentials=config['credentials'],
         cookie_name=config['cookie']['name'],
@@ -26,9 +24,9 @@ def page_login():
     authenticator.login('main')
     
     if st.session_state['authentication_status']:
-        authenticator.logout('sidebar')
+        authenticator.logout('로그아웃')
         st.write(f"환영합니다, {st.session_state['username'] }!")
-        st.title("울산형 AI 리터러시")
+        st.rerun()
     elif st.session_state['authentication_status'] == False:
         st.error("로그인에 실패했습니다.")
     elif st.session_state['authentication_status'] == None:

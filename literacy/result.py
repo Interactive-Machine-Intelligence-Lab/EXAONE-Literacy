@@ -1,16 +1,20 @@
 import streamlit as st
 
-def visualize():
+def visualize(key_list  = ["prob1", "prob2", "messages"]):
     # two columns layout
     col1, col2, col3 = st.columns(3)
     
-    #with col1:
-    #    st.markdown("## 챗봇 적용 이전 결과")
-    #    st.markdown(st.session_state.step1)
+    with col1:
+        # visualize the step1
+        st.markdown("## Step1")
+        st.write("Step1 내용")
+        st.write(st.session_state[key_list[0]])
         
     with col2:
-        st.markdown("## 챗봇 적용 이후 결과")
-        st.markdown(st.session_state.step2)
+        # visualize the step2
+        st.markdown("## Step2")
+        st.write("Step2 내용")
+        st.write(st.session_state[key_list[1]])
         
     with col3:
         # visualize the chatbot log
