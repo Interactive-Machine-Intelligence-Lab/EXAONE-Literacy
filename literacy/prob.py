@@ -4,8 +4,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from literacy.chatbot import get_exaone_response, reset_chat_history
 
-def problem(script: str='',
-            prob_key: str='prob1'):
+def get_problem_page(script: str='',
+                     prob_key: str='prob1'):
     # load the model
     @st.cache_resource  
     def load_model():
