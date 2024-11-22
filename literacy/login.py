@@ -1,35 +1,34 @@
 import streamlit as st
-import streamlit_authenticator as stauth
-import yaml
-
-
-def get_authenticators():
-    # FIXIT: database에 ID/PW 저장
-    with open("./secret/sample.yaml") as file: 
-        config = yaml.load(file, Loader=yaml.loader.SafeLoader)
-
-    authenticator = stauth.Authenticate(
-        credentials=config['credentials'],
-        cookie_name=config['cookie']['name'],
-        cookie_key=config['cookie']['key'],
-        cookie_expiry_days=config['cookie']['expiry_days'],
-    )
-    
-    return authenticator
-
+from db.controller import auth, get_all_users
 
 def page_login():
-    authenticator = get_authenticators()
-    
-    authenticator.login('main')
-    
-    if st.session_state['authentication_status']:
-        authenticator.logout('로그아웃')
-        st.write(f"환영합니다, {st.session_state['username'] }!")
-        st.rerun()
-    elif st.session_state['authentication_status'] == False:
-        st.error("로그인에 실패했습니다.")
-    elif st.session_state['authentication_status'] == None:
-        st.warning("username과 password를 입력해주세요.")
+    """
+    사용자 로그인 페이지
+    """
+    # 로그인 입력 필드
+    st.title("로그인")
+    school_name = st.text_input("학교명", key="school_name")
+    name = st.text_input("이름", key="name")
+    student_id = st.text_input("학생 번호", key="student_id")
+
+    if st.button("로그인"):
+        # 데이터베이스를 통해 인증 처리
+        res = auth(school_name, name, student_id)
+        if res["status"]:
+            st.success(f"환영합니다, {name}!")
+            st.session_state['authentication_status'] = True
+            st.session_state['username'] = name
+            st.session_state["user_id"] = res["id"]
+            st.rerun()
+        else:
+            st.error("로그인에 실패했습니다. 정보를 확인하세요.")
+
+    # 로그아웃 처리
+    if st.session_state.get('authentication_status'):
+        if st.button("로그아웃"):
+            st.session_state['authentication_status'] = False
+            st.session_state['username'] = None
+            st.success("성공적으로 로그아웃되었습니다.")
+            st.rerun()
         
 page_login()

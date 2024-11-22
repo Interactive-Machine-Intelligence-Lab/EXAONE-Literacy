@@ -22,3 +22,23 @@ def get_user_by_email(email):
     """
     query = "SELECT * FROM users WHERE email = ?"
     return db.fetch_query(query, (email,))
+
+def auth(school_name, name, student_id):
+    print(f"Auth Input: {school_name}, {name}, {student_id}")
+    
+    # 입력 데이터 공백 제거
+    school_name = school_name.strip()
+    name = name.strip()
+    student_id = str(student_id).strip()
+
+    query = "SELECT * FROM users WHERE school_name = ? AND name = ? AND student_id = ?"
+    result = db.fetch_query(query, (school_name, name, student_id))
+    
+    return {'status': len(result) > 0, 'id': 0 if len(result) == 0 else result[0][0]}
+
+def insert_submission(user_id, problem_id, chat_log, result=None):
+    """
+    제출 내역 추가
+    """
+    query = "INSERT INTO submissions (user_id, problem_id, chat_log, result) VALUES (?, ?, ?, ?)"
+    db.execute_query(query, (user_id, problem_id, str(chat_log), result))

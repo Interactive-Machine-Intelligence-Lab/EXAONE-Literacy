@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_NAME = "example.db"
+DB_NAME = "ailit.db"
 
 class Database:
     def __init__(self, db_name=DB_NAME):
