@@ -4,8 +4,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from literacy.chatbot import get_exaone_response, reset_chat_history
 
-def problem(script: str='',
-            prob_key: str='prob1'):
+def get_problem_page(script: str='',
+                     prob_key: str='prob1'):
     # load the model
     @st.cache_resource  
     def load_model():
@@ -34,7 +34,7 @@ def problem(script: str='',
     model.generation_config.pad_token_id = tokenizer.pad_token_id
     
     with col2:
-        chatbot_chatbox(model, tokenizer)
+        chatbot_chatbox(model, tokenizer, prob_key, script)
 
 
 def chatbot_textbox(prob_key: str='prob1'):
@@ -51,19 +51,23 @@ def chatbot_textbox(prob_key: str='prob1'):
             st.rerun()
             
             
-def chatbot_chatbox(model, tokenizer, 
+def chatbot_chatbox(model, tokenizer,
+                    key: str='prob1',
                     script: str=''):
     st.info("EXAONE 모델을 사용한 챗봇입니다. 아래의 입력창에 질문을 입력하면 EXAONE 모델이 답변을 생성합니다.")
-    # reset button
-    st.button("채팅기록 초기화", on_click=reset_chat_history)
-    
     # Initialize chat history
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    message_key = key + '_messages' 
+    if message_key not in st.session_state:
+        st.session_state[message_key] = []
         reset_chat_history(script)
-
+        
+    # reset button
+    def reset_button(script, key):
+        return reset_chat_history(script, key)
+    st.button("채팅기록 초기화", on_click=reset_button)
+    
     # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
+    for message in st.session_state[message_key]:
         role = message["role"]
         if role == "system":
             continue
@@ -75,13 +79,21 @@ def chatbot_chatbox(model, tokenizer,
         # Display user message in chat message container
         st.chat_message("user").markdown(prompt)
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state[message_key].append({"role": "user", "content": prompt})
         
         # display the assistant response from stream
         with st.chat_message("assistant"):
             text_box = st.empty()
-            for response in get_exaone_response(st.session_state.messages, model, tokenizer, script):
+            # parse input
+            messages = []
+            for message in st.session_state[message_key]:
+                if message['content'] == '초기화 됨':
+                    messages = []
+                    continue
+                messages.append(message)
+            
+            for response in get_exaone_response(messages, model, tokenizer, script):
                 text_box.markdown(response)
                 
         print("챗봇 결과: ", response)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state[message_key].append({"role": "assistant", "content": response})
