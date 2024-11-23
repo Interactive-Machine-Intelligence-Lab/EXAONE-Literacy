@@ -4,3 +4,6 @@ key.txt
 
 # ignore python cache
 __pycache__/
+
+# db
+*.db

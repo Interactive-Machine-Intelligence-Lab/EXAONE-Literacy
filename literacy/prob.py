@@ -3,6 +3,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from literacy.chatbot import get_exaone_response, reset_chat_history
+from db.controller import insert_submission
 
 def get_problem_page(script: str='',
                      prob_key: str='prob1'):
@@ -48,6 +49,9 @@ def chatbot_textbox(prob_key: str='prob1'):
             st.write("제출 완료: ", text)
             st.write("다음 단계로 이동합니다.")
             st.session_state[prob_key] = text
+            insert_submission(st.session_state['user_id'], prob_key, st.session_state[
+            prob_key+'_messages'
+            ], st.session_state[prob_key])
             st.rerun()
             
             

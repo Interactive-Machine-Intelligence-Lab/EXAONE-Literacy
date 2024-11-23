@@ -26,10 +26,11 @@ if __name__ == "__main__":
     
     for problem in problem_dict['problems']:
         name = problem['name']
+        key = problem['key']
         problem_script = problem['script']
         url = problem['url']
         
-        def prob_pg(script=problem_script, prob_key=name):
+        def prob_pg(script=problem_script, prob_key=key):
             return get_problem_page(script, prob_key)
         
         page_func = prob_pg
