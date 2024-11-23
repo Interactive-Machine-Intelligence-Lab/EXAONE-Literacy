@@ -30,7 +30,6 @@
 ```
 
 ## Docker
-
 `Dockerfile` 을 활용하여 도커파일을 통해 배포가 가능합니다. (8501 포트)
 `scratch/`의 경우 `scratch-gui` 를 도커 파일을 통해 배포 중입니다.
 
