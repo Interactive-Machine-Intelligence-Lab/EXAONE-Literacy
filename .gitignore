@@ -3,3 +3,6 @@ models/
 
 # ignore python cache
 __pycache__/
+
+# db
+*.db
