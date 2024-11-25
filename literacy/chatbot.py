@@ -68,6 +68,7 @@ def reset_chat_history(script: str='',
         However, you must not directly find the error. 
         Also, you must not directly show the fixed code. 
         You must not write the whole code for the user.
+        You must not write python code.
         You only allow to debug when the error is found by user."""
     content += script
     

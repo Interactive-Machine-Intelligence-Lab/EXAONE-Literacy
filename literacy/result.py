@@ -52,5 +52,6 @@ def get_result_page(title: str='',
     ethics = st.select_slider("윤리적 활용능력", options, value=3)
     
     if st.button("평가 제출"):
+        print(type(understanding))
         st.write("평가가 제출되었습니다.")
-        insert_rating(st.session_state['user_id'], key, understanding, problem_solving, critical_thinking, ethics)
+        insert_rating(st.session_state['user_id'], key, complete_time, understanding, problem_solving, critical_thinking, ethics)

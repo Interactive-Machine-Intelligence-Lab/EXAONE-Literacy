@@ -56,9 +56,9 @@ def insert_submission(user_id, problem_id, chat_log, result=None):
     db.execute_query(query, (user_id, problem_id, str(chat_log), result))
     
     
-def insert_rating(user_id, problem_id, understanding, problem_solving, critical_thinking, ethics):
+def insert_rating(user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics):
     """
     평가 추가
     """
-    query = "INSERT INTO ratings (user_id, problem_id, understanding, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?)"
-    db.execute_query(query, (user_id, problem_id, understanding, problem_solving, critical_thinking, ethics))
+    query = "INSERT INTO ratings (user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    db.execute_query(query, (user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics))

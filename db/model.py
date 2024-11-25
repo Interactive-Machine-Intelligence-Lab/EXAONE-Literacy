@@ -37,6 +37,21 @@ def create_tables():
         FOREIGN KEY(user_id) REFERENCES users(id)
     )
     """)
+    
+    # ratings 테이블 생성
+    db.execute_query("""
+    CREATE TABLE IF NOT EXISTS ratings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        problem_id INTEGER NOT NULL,
+        runtime INTEGER NOT NULL,
+        understanding INTEGER NOT NULL,
+        problem_solving INTEGER NOT NULL,
+        critical_thinking INTEGER NOT NULL,
+        ethics INTEGER NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+    )
+    """)
 
     return db
 
