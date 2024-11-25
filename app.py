@@ -50,7 +50,7 @@ if __name__ == "__main__":
         result_list = []
 
         for url in url_list:
-            if url in st.session_state:
+            if url + '_time' in st.session_state:
                 # find the script with the match url
                 for problem in problem_dict['problems']:
                     if problem['url'] == url:
