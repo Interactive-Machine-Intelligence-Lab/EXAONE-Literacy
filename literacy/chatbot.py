@@ -69,5 +69,12 @@ def reset_chat_history(script: str='',
         You must not write the whole code for the user.
         You only allow to debug when the error is found by user."""
     content += script
-    st.session_state[key + '_messages'].append({"role": "system", "content": '초기화 됨'})
-    st.session_state[key + '_messages'].append({"role": "system", "content": content})
+    
+    key_messages = key + '_messages'
+    
+    if key_messages not in st.session_state:
+        st.session_state[key_messages] = []
+    else:
+        st.session_state[key_messages].append({"role": "system", "content": '초기화 됨'})
+    
+    st.session_state[key_messages].append({"role": "system", "content": content})
