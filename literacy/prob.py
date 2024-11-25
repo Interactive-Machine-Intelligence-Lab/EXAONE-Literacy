@@ -1,6 +1,7 @@
 import streamlit as st
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from time import time
 
 from literacy.chatbot import get_exaone_response, reset_chat_history
 from db.controller import insert_submission
@@ -41,6 +42,12 @@ def get_problem_page(script: str='',
 def chatbot_textbox(prob_key: str='prob1'):
     if prob_key not in st.session_state:
         st.session_state[prob_key] = ""
+        
+    # for running time computation
+    start_time = time()
+    if prob_key+'_start_time' not in st.session_state:
+        st.session_state[prob_key+'_start_time'] = start_time    
+        
     with st.form(key=prob_key+'box'):
         text_msg = "챗봇을 활용하여 주어진 주제에 맞는 글을 작성 후 `제출하기` 버튼을 눌러주세요.\n\n"
         text = st.text_area(text_msg, value=st.session_state[prob_key])
@@ -50,9 +57,14 @@ def chatbot_textbox(prob_key: str='prob1'):
             st.write("다음 단계로 이동합니다.")
             st.session_state[prob_key] = text
             insert_submission(st.session_state['user_id'], prob_key, st.session_state[
-            prob_key+'_messages'
+                prob_key+'_messages'
             ], st.session_state[prob_key])
-            st.rerun()
+            
+            # write the running time
+            end_time = time()
+            running_time = end_time - st.session_state[prob_key+'_start_time']
+            st.write("소요 시간: ", running_time)
+            st.session_state[prob_key+'_time'] = end_time
             
             
 def chatbot_chatbox(model, tokenizer,
