@@ -30,7 +30,7 @@ if __name__ == "__main__":
         problem_script = problem['script']
         url = problem['url']
         
-        def prob_pg(script=problem_script, prob_key=key):
+        def prob_pg(script=problem_script, prob_key=url):
             return get_problem_page(script, prob_key)
         
         page_func = prob_pg
@@ -40,8 +40,6 @@ if __name__ == "__main__":
         
         problem_pages.append(page)
         url_list.append(url)
-    
-    result = st.Page("literacy/result.py", title="Result")
     
     if 'authentication_status' in st.session_state and st.session_state.authentication_status:
         pg_dict = {
@@ -53,8 +51,14 @@ if __name__ == "__main__":
 
         for url in url_list:
             if url in st.session_state:
-                def result_pg(key=url):
-                    return get_result_page(key)
+                # find the script with the match url
+                for problem in problem_dict['problems']:
+                    if problem['url'] == url:
+                        title = problem['name']
+                        script = problem['script']
+                        break
+                def result_pg(title=title, script=script, key=url):
+                    return get_result_page(title, script, key)
                 result = st.Page(result_pg, title=url+'_result', url_path=url+'_result')
                 result_list.append(result)
 
