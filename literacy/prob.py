@@ -64,7 +64,7 @@ def chatbot_textbox(prob_key: str='prob1'):
             end_time = time()
             running_time = end_time - st.session_state[prob_key+'_start_time']
             st.write("소요 시간: ", running_time)
-            st.session_state[prob_key+'_time'] = end_time
+            st.session_state[prob_key+'_time'] = running_time
             
             
 def chatbot_chatbox(model, tokenizer,
@@ -75,10 +75,10 @@ def chatbot_chatbox(model, tokenizer,
     message_key = key + '_messages' 
     if message_key not in st.session_state:
         st.session_state[message_key] = []
-        reset_chat_history(script)
+        reset_chat_history(script, key)
         
     # reset button
-    def reset_button(script, key):
+    def reset_button(script=script, key=key):
         return reset_chat_history(script, key)
     st.button("채팅기록 초기화", on_click=reset_button)
     
@@ -108,7 +108,8 @@ def chatbot_chatbox(model, tokenizer,
                     continue
                 messages.append(message)
             
-            for response in get_exaone_response(messages, model, tokenizer, script):
+            for response in get_exaone_response(messages, model, tokenizer, 
+                                                script, key):
                 text_box.markdown(response)
                 
         print("챗봇 결과: ", response)

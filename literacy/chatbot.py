@@ -8,6 +8,7 @@ def get_exaone_response(messages,
                         model,
                         tokenizer,
                         script='',
+                        key='prob1',
                         max_length=4096,
                         chunk_size=1024,
                         device='cuda'):
@@ -23,7 +24,7 @@ def get_exaone_response(messages,
     if tokens.shape[1] > max_length:
         warn_msg = "입력이 가능한 최대 길이를 초과했습니다. 채팅 로그가 초기화됩니다.".format(max_length, tokens.shape[1], max_length)
         st.warning(warn_msg)
-        reset_chat_history(script)
+        reset_chat_history(script, key)
     else:
         info_msg = "입력이 가능한 최대 길이는 {} 토큰 입니다. 현재 {} 토큰이 사용되었습니다.".format(max_length, tokens.shape[1])
         st.info(info_msg)
