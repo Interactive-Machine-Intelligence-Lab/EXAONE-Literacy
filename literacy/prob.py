@@ -6,6 +6,8 @@ from time import time
 from literacy.chatbot import get_exaone_response, reset_chat_history
 from db.controller import insert_submission
 
+LIMIT = 1000
+
 def get_problem_page(script: str='',
                      prob_key: str='prob1'):
     # load the model
@@ -49,10 +51,18 @@ def chatbot_textbox(prob_key: str='prob1'):
         st.session_state[prob_key+'_start_time'] = start_time    
         
     with st.form(key=prob_key+'box'):
-        text_msg = "챗봇을 활용하여 주어진 주제에 맞는 글을 작성 후 `제출하기` 버튼을 눌러주세요.\n\n"
+        text_msg = "챗봇을 활용하여 주어진 주제에 맞는 글을 작성 후 `제출하기` 버튼을 눌러주세요. 챗봇의 도움을 받은 부분이 있다면 이를 서술하고, 글자 수는 {} 자 이하로 작성해주세요. \n\n".format(LIMIT)
         text = st.text_area(text_msg, value=st.session_state[prob_key])
         submitted = st.form_submit_button("제출하기")
+        st.write("현재 글자 수: ", len(text))
+        print(text)
         if submitted:
+            # check the text
+            # length limit
+            if len(text) > LIMIT:
+                st.warning("글자 수 제한을 초과했습니다. {}자 이하로 작성해주세요.".format(LIMIT))
+                return
+            
             st.write("제출 완료: ", text)
             st.write("다음 단계로 이동합니다.")
             st.session_state[prob_key] = text

@@ -9,7 +9,7 @@ def get_exaone_response(messages,
                         tokenizer,
                         script='',
                         key='prob1',
-                        max_length=4096,
+                        max_length=2048,
                         chunk_size=1024,
                         device='cuda'):
     
