@@ -1,6 +1,24 @@
 from db import Database
 
+
 db = Database()
+
+
+def get_rate_by_user_id(user_id):
+    """
+    사용자별 평가 조회
+    """
+    query = "SELECT * FROM ratings WHERE user_id = ?"
+    return db.fetch_query(query, (user_id,))
+
+
+def get_school_users(school_name):
+    """
+    학교별 사용자 조회
+    """
+    query = "SELECT * FROM users WHERE school_name = ?"
+    return db.fetch_query(query, (school_name,))
+
 
 def get_dataframe():
     """
@@ -56,9 +74,9 @@ def insert_submission(user_id, problem_id, chat_log, result=None):
     db.execute_query(query, (user_id, problem_id, str(chat_log), result))
     
     
-def insert_rating(user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics):
+def insert_rating(user_id, problem_id, runtime, problem_solving, critical_thinking, ethics):
     """
     평가 추가
     """
-    query = "INSERT INTO ratings (user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    db.execute_query(query, (user_id, problem_id, runtime, understanding, problem_solving, critical_thinking, ethics))
+    query = "INSERT INTO ratings (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?)"
+    db.execute_query(query, (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics))

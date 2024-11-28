@@ -68,6 +68,7 @@ def get_result_page(title: str='',
     # rating
     st.markdown("## 평가")
     st.markdown("### 문제해결능력")
+    response_list = []
     
     init_content = "You are EXAONE model from LG AI Research, a helpful assistant."
     init_content += """You assistant following the conversation and provide helpful responses. 
@@ -88,7 +89,8 @@ def get_result_page(title: str='',
         text_box = st.empty()
         for response in get_exaone_response(messages, model, tokenizer):
             text_box.write(response)
-    
+        response_list.append(response)
+
     st.markdown("### 비판적활용력")
     
     messages = [{"role": "system", "content": init_content}]
@@ -112,11 +114,12 @@ def get_result_page(title: str='',
     학생의 답변에 대한 점수는 1~5점까지 부여됩니다. 이후 장점과 단점, 그리고 교육적 활용방안에 대해 작성하세요.
     """
     messages.append({"role": "user", "content": message})
-    
+
     with st.chat_message("assistant"):
         text_box = st.empty()
         for response in get_exaone_response(messages, model, tokenizer):
             text_box.write(response)
+        response_list.append(response)
             
     st.markdown("### 윤리적 활용능력")
     
@@ -141,6 +144,19 @@ def get_result_page(title: str='',
         text_box = st.empty()
         for response in get_exaone_response(messages, model, tokenizer):
             text_box.write(response)
+        response_list.append(response)
 
-    
-        
+    convert_dict = {
+        'change': 1,
+        'temperature': 2,
+        'palindrome': 3,
+    }
+
+    insert_rating(
+        user_id=st.session_state['user_id'],
+        problem_id=convert_dict[key],
+        runtime=complete_time,
+        problem_solving=response_list[0],
+        critical_thinking=response_list[1],
+        ethics=response_list[2],
+    )

@@ -45,7 +45,6 @@ def create_tables():
         user_id INTEGER NOT NULL,
         problem_id INTEGER NOT NULL,
         runtime INTEGER NOT NULL,
-        understanding INTEGER NOT NULL,
         problem_solving INTEGER NOT NULL,
         critical_thinking INTEGER NOT NULL,
         ethics INTEGER NOT NULL,
