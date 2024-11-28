@@ -27,8 +27,9 @@ def main():
     
     message_key = "messages"
     
-    content = "You are EXAONE model from LG AI Research, a helpful assistant."
-    st.session_state[message_key] = [{'role': 'system', 'content': content}]
+    if message_key not in st.session_state:
+        content = "You are EXAONE model from LG AI Research, a helpful assistant."
+        st.session_state[message_key] = [{'role': 'system', 'content': content}]
     
     for message in st.session_state[message_key]:
         role = message["role"]
