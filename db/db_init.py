@@ -7,6 +7,7 @@ def insert_mock_users(db):
     mock_users = [
         ("UNIST", "BAE", "20211141"),
         ("UNIST", "KIM", "20210001"),
+        ("UNIST", "LEE", "T001")
     ]
 
     for user in mock_users:

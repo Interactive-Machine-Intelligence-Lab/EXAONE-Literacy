@@ -4,6 +4,7 @@ import yaml
 import streamlit as st
 from literacy.prob import get_problem_page
 from literacy.result import get_result_page
+from literacy.visualize import page_visualize
 
 
 def get_problem():
@@ -23,6 +24,17 @@ if __name__ == "__main__":
     
     problem_pages = []
     url_list = []
+
+    manage_pages = []
+
+    if st.session_state.get('manager'):
+        def manage_pg():
+            return page_visualize()
+
+        page_func = manage_pg
+        page = st.Page(page_func, title="학생 점수 관리", url_path='manage')
+
+        manage_pages.append(page)
     
     for problem in problem_dict['problems']:
         name = problem['name']
@@ -42,10 +54,17 @@ if __name__ == "__main__":
         url_list.append(url)
     
     if 'authentication_status' in st.session_state and st.session_state.authentication_status:
-        pg_dict = {
-            "로그인": [login_page],
-            "문제": problem_pages,
-        } 
+        if st.session_state.get('manager'):
+            pg_dict = {
+                "로그인": [login_page],
+                "문제": problem_pages,
+                "관리자 페이지": manage_pages
+            }
+        else:
+            pg_dict = {
+                "로그인": [login_page],
+                "문제": problem_pages
+            }
         
         result_list = []
 
