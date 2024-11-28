@@ -45,7 +45,7 @@ def get_result_page(title: str='',
         
         complete_time = st.session_state[key+'_time']
         # with min, second format
-        minutes = complete_time // 60
+        minutes = int(complete_time // 60)
         seconds = complete_time % 60
         seconds = round(seconds, 2)
         
