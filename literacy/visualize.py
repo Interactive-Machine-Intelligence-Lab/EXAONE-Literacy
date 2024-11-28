@@ -23,7 +23,9 @@ def result_to_df(result, index):
     for i in range(len(result)):
             data = {
                 "시간": [result[i][3]],
-                "평가": [result[i][4]],
+                "문제 해결능력": [result[i][4]],
+                "비판적 활용능력": [result[i][5]],
+                "윤리적 활용능력": [result[i][6]],
             }
             st.write(pd.DataFrame(data))
     if len(result) == 0:

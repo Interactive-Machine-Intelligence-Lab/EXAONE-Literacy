@@ -91,7 +91,7 @@ def get_result_page(title: str='',
             text_box.write(response)
         response_list.append(response)
 
-    st.markdown("### 비판적활용력")
+    st.markdown("### 비판적 활용능력")
     
     messages = [{"role": "system", "content": init_content}]
     
