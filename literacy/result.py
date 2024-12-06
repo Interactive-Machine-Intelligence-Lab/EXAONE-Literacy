@@ -43,19 +43,6 @@ def get_result_page(title: str='',
         st.write("문제 해결 결과 내용")
         st.write(text)
         
-        complete_time = st.session_state[key+'_time']
-        # with min, second format
-        minutes = int(complete_time // 60)
-        seconds = complete_time % 60
-        seconds = round(seconds, 2)
-        
-        if minutes == 0:
-            complete_str = "{}초".format(seconds)
-        else:
-            complete_str = "{}분 {}초".format(minutes, seconds)
-        
-        st.write("걸린 시간: ", complete_str)
-        
     with col2:
         st.markdown("## 챗봇 기록")
         for message in st.session_state[key + '_messages']:

@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 
 from db.controller import get_school_users, get_answer_by_user_id
+from literacy.result import get_result_page
 
 DB_NAME = "ailit.db"
 
@@ -71,9 +72,20 @@ def page_visualize():
             
             student_answer = answer[4]
             
-            print(problem_id)
-            print(chat_log)
-            print(student_answer)
+            st.session_state[problem_id] = student_answer
+            st.session_state[problem_id + '_messages'] = chat_log
+            
+            for problem in problem_dict['problems']:
+                problem_url = problem['url']
+                problem_script = problem['script']
+                problem_title = problem['name']
+                if problem_url == problem_id:
+                    script = problem_script
+                    title = problem_title
+                    
+            get_result_page(title, script, problem_id)
+            
+            
 
     except Exception as e:
         # if list index out of range
@@ -81,21 +93,31 @@ def page_visualize():
         st.write(e)
     
 
-def str_to_list(inputs):
+def str_to_list(input_string):
     # I want to change from strings to list of dictionaries
     # example:
-    # inputs = "[{'role': 'user', 'content': '안녕하세요'}, {'role': 'assistant', 'content': '안녕하세요!'}]"
+    # input_string = "[{'role': 'user', 'content': '안녕하세요'}, {'role': 'assistant', 'content': '안녕하세요!'}]"
     # output = [{'role': 'user', 'content': '안녕하세요'}, {'role': 'assistant', 'content': '안녕하세요!'}]
     
     # remove the first and last brackets
-    inputs = inputs[2:-2]
+    input_string = input_string[2:-2]
     
     # split by '}, {' to get each dictionary
-    inputs = inputs.split('}, {')
+    input_string = input_string.split('}, {')
     # convert to list of dictionaries
-    print("inputs: ", inputs)   
-    
-    return inputs
+    outputs = []
+    for item in input_string:
+        if type(item) == dict:
+            pass
+        # find 'role' and 'content' and add to the dictionary
+        role = re.search(r"'role': '(.+?)'", item).group(1)
+        content = re.search(r"'content': '(.+?)'", item).group(1)
+        print(role, content)
+        # add to the dictionary
+        outputs.append({"role": role,
+                        "content": content})
+        
+    return outputs
     
     
 
