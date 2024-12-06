@@ -12,6 +12,14 @@ def get_rate_by_user_id(user_id):
     return db.fetch_query(query, (user_id,))
 
 
+def get_answer_by_user_id(user_id):
+    """
+    사용자별 답안 조회
+    """
+    query = "SELECT * FROM submissions WHERE user_id = ?"
+    return db.fetch_query(query, (user_id,))
+
+
 def get_school_users(school_name):
     """
     학교별 사용자 조회
@@ -70,13 +78,30 @@ def insert_submission(user_id, problem_id, chat_log, result=None):
     """
     제출 내역 추가
     """
-    query = "INSERT INTO submissions (user_id, problem_id, chat_log, result) VALUES (?, ?, ?, ?)"
-    db.execute_query(query, (user_id, problem_id, str(chat_log), result))
+    # if query user_id and problem_id already exists, update the chat_log
+    query = "SELECT * FROM submissions WHERE user_id = ? AND problem_id = ?"
+    res = db.fetch_query(query, (user_id, problem_id))
+    
+    if len(res) > 0:
+        query = "UPDATE submissions SET chat_log = ? WHERE user_id = ? AND problem_id = ?"
+        db.execute_query(query, (str(chat_log), user_id, problem_id))
+        return
+    else:
+        query = "INSERT INTO submissions (user_id, problem_id, chat_log, result) VALUES (?, ?, ?, ?)"
+        db.execute_query(query, (user_id, problem_id, str(chat_log), result))
     
     
 def insert_rating(user_id, problem_id, runtime, problem_solving, critical_thinking, ethics):
     """
     평가 추가
     """
-    query = "INSERT INTO ratings (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?)"
-    db.execute_query(query, (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics))
+    query = "SELECT * FROM ratings WHERE user_id = ? AND problem_id = ?"
+    res = db.fetch_query(query, (user_id, problem_id))
+    
+    if len(res) > 0:
+        query = "UPDATE ratings SET runtime = ?, problem_solving = ?, critical_thinking = ?, ethics = ? WHERE user_id = ? AND problem_id = ?"
+        db.execute_query(query, (runtime, problem_solving, critical_thinking, ethics, user_id, problem_id))
+        return
+    else:
+        query = "INSERT INTO ratings (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics) VALUES (?, ?, ?, ?, ?, ?)"
+        db.execute_query(query, (user_id, problem_id, runtime, problem_solving, critical_thinking, ethics))

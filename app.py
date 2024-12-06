@@ -57,7 +57,6 @@ if __name__ == "__main__":
         if st.session_state.get('manager'):
             pg_dict = {
                 "로그인": [login_page],
-                "문제": problem_pages,
                 "관리자 페이지": manage_pages
             }
         else:
@@ -68,6 +67,8 @@ if __name__ == "__main__":
         
         result_list = []
 
+        """
+        when the user submits the text, the result page is created
         for url in url_list:
             if url + '_time' in st.session_state:
                 # find the script with the match url
@@ -83,6 +84,8 @@ if __name__ == "__main__":
 
         if result_list:
             pg_dict["결과"] = result_list
+        """
+        
         pg = st.navigation(pg_dict)
     else:
         pg = st.navigation([login_page])
