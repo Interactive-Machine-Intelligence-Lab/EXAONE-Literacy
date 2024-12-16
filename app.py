@@ -67,25 +67,6 @@ if __name__ == "__main__":
         
         result_list = []
 
-        """
-        when the user submits the text, the result page is created
-        for url in url_list:
-            if url + '_time' in st.session_state:
-                # find the script with the match url
-                for problem in problem_dict['problems']:
-                    if problem['url'] == url:
-                        title = problem['name']
-                        script = problem['script']
-                        break
-                def result_pg(title=title, script=script, key=url):
-                    return get_result_page(title, script, key)
-                result = st.Page(result_pg, title=url+'_result', url_path=url+'_result')
-                result_list.append(result)
-
-        if result_list:
-            pg_dict["결과"] = result_list
-        """
-        
         pg = st.navigation(pg_dict)
     else:
         pg = st.navigation([login_page])

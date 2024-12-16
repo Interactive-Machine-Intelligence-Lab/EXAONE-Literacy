@@ -116,7 +116,7 @@ def get_result_page(title: str='',
     criteria += "문제는 다음과 같습니다. "
     criteria += script
     criteria += "챗봇 로그는 다음과 같습니다."
-    messages.append({"role": "user", "content": criteria})
+    messages = [{"role": "user", "content": criteria}]
     
     for message in st.session_state[key + '_messages']:
         role = message["role"]
@@ -142,7 +142,7 @@ def get_result_page(title: str='',
     insert_rating(
         user_id=st.session_state['user_id'],
         problem_id=convert_dict[key],
-        runtime=complete_time,
+        runtime=0,
         problem_solving=response_list[0],
         critical_thinking=response_list[1],
         ethics=response_list[2],
