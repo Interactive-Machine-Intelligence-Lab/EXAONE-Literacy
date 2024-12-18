@@ -119,8 +119,6 @@ def str_to_list(input_string):
         
     return outputs
     
-    
-
 
 if __name__ == "__main__":
     page_visualize()
