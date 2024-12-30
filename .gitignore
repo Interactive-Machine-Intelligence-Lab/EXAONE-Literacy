@@ -1,2 +1,9 @@
-*.safetensors
-model.safetensors.index.json
+# ignore model
+models/
+key.txt
+
+# ignore python cache
+__pycache__/
+
+# db
+*.db
